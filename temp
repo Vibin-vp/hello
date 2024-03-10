@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  apache-container:
+    image: httpd:latest
+    container_name: my-apache-container
+    ports:
+      - "8080:80"
+    networks:
+      my_network:
+        ipv4_address: 172.168.10.2
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.168.10.0/30
