@@ -1,0 +1,29 @@
+- name: Install Docker and start Apache container
+  hosts: your_remote_server
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start Apache container
+      docker_container:
+        name: my-apache-container
+        image: httpd:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "8080:80"
+        networks:
+          - name: my_network
+            ipv4_address: 172.168.10.2
+
+networks:
+  - name: my_network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.168.10.0/30
